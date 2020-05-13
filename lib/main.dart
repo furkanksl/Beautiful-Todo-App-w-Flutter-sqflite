@@ -1,9 +1,15 @@
-
+import 'package:My_Todo_App/education_notes.dart';
+import 'package:My_Todo_App/other_notes.dart';
+import 'package:My_Todo_App/shop_notes.dart';
+import 'package:My_Todo_App/utils/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:My_Todo_App/home.dart';
+import 'package:My_Todo_App/notes.dart';
+import 'package:intl/intl.dart';
 
-//import 'main.dart';
+import 'model/todo_item.dart';
+
+//import 'main.darkjt';
 
 void main() {
   runApp(MaterialApp(
@@ -13,156 +19,196 @@ void main() {
   ));
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  int _selectedCategoryIndex = 0;
+
+  TabController _tabController;
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey();
+  DatabaseHelper databaseHelper;
+
+  List<String> categoriesName = ["Tasks", "Shop Tasks", "Other Tasks", "Education Tasks"];
+  List<int> categoriesLen = [0, 0, 0, 0];
+
+  var formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabController = TabController(initialIndex: 0, length: 3, vsync: this);
+
+    databaseHelper = DatabaseHelper();
+
+    databaseHelper.allTodos().then((mapList) {
+      setState(() {
+        for (Map map in mapList) {
+          categoriesLen[0]++;
+        }
+      });
+    });
+    databaseHelper.allTodosShop().then((mapList) {
+      setState(() {
+        for (Map map in mapList) {
+          categoriesLen[1]++;
+        }
+      });
+    });
+    databaseHelper.allTodosOther().then((mapList) {
+      setState(() {
+        for (Map map in mapList) {
+          categoriesLen[2]++;
+        }
+      });
+    });
+
+    databaseHelper.allTodosEdu().then((mapList) {
+      setState(() {
+        for (Map map in mapList) {
+          categoriesLen[3]++;
+        }
+      });
+    });
+  }
+
+  Widget _buildCategoryCard(int index, String title, int count) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedCategoryIndex = index;
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NotesListWidget()),
+            );
+          }
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ShopListWidget()),
+            );
+          }
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OtherListWidget()),
+            );
+          }
+          if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EducationListWidget()),
+            );
+          }
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        height: 250.0,
+        width: 250.0,
+        decoration: BoxDecoration(
+          color:
+              _selectedCategoryIndex == index ? Colors.red : Color(0xFFF5F7FB),
+          borderRadius: BorderRadius.circular(20.0),
+          boxShadow: [
+            _selectedCategoryIndex == index
+                ? BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 2),
+                    blurRadius: 10.0)
+                : BoxShadow(color: Colors.transparent),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: _selectedCategoryIndex == index
+                      ? Colors.white
+                      : Colors.black, //0xFFAFB4C6
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                categoriesLen[index].toString(),
+                style: TextStyle(
+                  color: _selectedCategoryIndex == index
+                      ? Colors.white
+                      : Colors.black,
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final title = "ToDo App Home";
 
-    List<Choice> choices = const <Choice>[
-      const Choice(
-          title: 'MY TASKS',
-          date: '',
-          description: ' ',
-          imglink: 'https://i.ibb.co/4mRF67b/clipboard.png'),
-      
-    ];
-
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: title,
       color: Colors.red,
       home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            title,
-            style: TextStyle(color: Colors.black),
-            textAlign: TextAlign.center,
-          ),
-          backgroundColor: Color.fromRGBO(172, 172, 172, 87),
-        ),
-        body: Container(
-          alignment: Alignment.center,
-          color: Colors.brown,
-          child:  ListView(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(20.0),
-              children: List.generate(
-                choices.length,
-                (index) {
-                  return Center(
-                    child: ChoiceCard(
-                        choice: choices[index], item: choices[index]),
+        backgroundColor: Colors.red,
+        body: ListView(
+          children: <Widget>[
+            SizedBox(height: 20.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(width: 10.0),
+                  Text(
+                    'To-do',
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              height: 700,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: categoriesName.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return SizedBox(width: 20.0);
+                  }
+
+                  return _buildCategoryCard(
+                    index - 1,
+                    categoriesName[index - 1],
+                    categoriesLen[index - 1],
                   );
                 },
               ),
             ),
-         
-        
-      ),),
-    );
-  }
-}
-
-class Choice {
-  final String title;
-  final String date;
-  final String description;
-  final String imglink;
-
-  const Choice({this.title, this.date, this.description, this.imglink});
-}
-
-class ChoiceCard extends StatelessWidget {
-  const ChoiceCard(
-      {Key key,
-      this.choice,
-      this.onTap,
-      @required this.item,
-      this.selected: false})
-      : super(key: key);
-
-  final Choice choice;
-  final VoidCallback onTap;
-  final Choice item;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.display1;
-    if (selected)
-      textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
-    return Container(
-      child : GestureDetector(
-          onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AnimatedListWidget()),
-                );
-              },
-      child: Card(
-        
-        margin: const EdgeInsets.only(
-            left: 10.0, right: 0.0, bottom: 50.0, top: 350.0),
-        elevation: 5.0,
-        color: Color.fromRGBO(176, 161, 155, 5),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.elliptical(20.0, 20.0),
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.elliptical(20, 20),
-          ),
-        ),
-        child : GestureDetector(
-          onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AnimatedListWidget()),
-                );
-              },
-        child: Column(
-          children: <Widget>[
-            new GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AnimatedListWidget()),
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 100.0,
-                  height: 100.0,
-                  child: Image.network(choice.imglink),
-                ),
-              ),
-            ),
-            new GestureDetector(
-              onTap: () {},
-              child: Container(
-                alignment: Alignment.center,
-                width: 300,
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(choice.title,
-                        style: Theme.of(context).textTheme.title),
-                    Text(choice.date,
-                        style: TextStyle(color: Colors.black.withOpacity(0.5))),
-                    Text(choice.description),
-                  ],
-                ),
-              ),
-            )
           ],
-          crossAxisAlignment: CrossAxisAlignment.center,
         ),
-      ),
-      ),
       ),
     );
   }
