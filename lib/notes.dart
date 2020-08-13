@@ -1,9 +1,7 @@
 import 'package:My_Todo_App/education_notes.dart';
-import 'package:My_Todo_App/liquid_page.dart';
 import 'package:My_Todo_App/model/todo_item.dart';
 import 'package:My_Todo_App/other_notes.dart';
 import 'package:My_Todo_App/shop_notes.dart';
-import 'package:My_Todo_App/utils/colors.dart';
 import 'package:My_Todo_App/utils/database_helper.dart';
 import 'package:My_Todo_App/utils/ui_helpers.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -11,10 +9,10 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:My_Todo_App/main.dart';
-import 'package:My_Todo_App/add_keywords.dart';
 import 'package:My_Todo_App/Animation/animated_dialog_box.dart';
 import 'Animation/FadeAnimation.dart';
 import 'dart:ui';
+import 'package:My_Todo_App/ListIterator.dart';
 
 class NotesListWidget extends StatefulWidget {
   const NotesListWidget({Key key}) : super(key: key);
@@ -25,9 +23,10 @@ class NotesListWidget extends StatefulWidget {
 class AnimatedListWidgetState extends State<NotesListWidget> {
   var formKey = GlobalKey<FormState>();
 
-  String _title = "empty";
-  String _note = "empty";
-  String _other = "empty";
+  ListIterator itr;
+  String _title;
+  String _note;
+  String _other;
 
   String get note => _note;
 
@@ -378,18 +377,18 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
               ) {
                 return Material(
                   child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: Offset(0.0, 1.0),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: SlideTransition(
                     position: Tween<Offset>(
-                      begin: Offset.zero,
-                      end: Offset(0.0, 1.0),
-                    ).animate(secondaryAnimation),
-                    child: child,
+                      begin: Offset(0.0, 1.0),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset.zero,
+                        end: Offset(0.0, 1.0),
+                      ).animate(secondaryAnimation),
+                      child: child,
+                    ),
                   ),
-                ),
                 );
               },
               transitionDuration: Duration(milliseconds: 700),
@@ -405,14 +404,13 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
                         elevation: 5.0,
                         shadowColor: Colors.black38,
                         child: InkWell(
-                          splashColor: Colors.black ,
+                          splashColor: Colors.black,
                           child: null,
                           onTap: doNothing,
                         ),
                       ),
                     ),
                   ),
-                  
                   Center(
                     child: Hero(
                       tag: 'elt1',
@@ -427,61 +425,59 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
                     ),
                   ),
                   Container(
-        margin: EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
-        height: 600.0,
-        width: 550.0,
-        decoration: BoxDecoration(
-          color: Colors.red , 
-          borderRadius: BorderRadius.circular(20.0),
-          boxShadow: [ BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0, 2),
-                    blurRadius: 10.0)
-                
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 10.0 , top: 0),
-              child: Text(
-                "Title : "+todoList[index].title,
-                style: TextStyle(
-                  color: Colors.black, //0xFFAFB4C6
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Padding(
-               padding: EdgeInsets.only(left: 10.0 , top: 0 , bottom: 100 , right: 10),
-              child: Text(
-                "Task : "+todoList[index].text,
-                style: TextStyle(
-                  color:  Colors.black,
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-               
-                 
+                    margin:
+                        EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
+                    height: 600.0,
+                    width: 550.0,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black26,
+                            offset: Offset(0, 2),
+                            blurRadius: 10.0)
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 10.0, top: 0),
+                          child: Text(
+                            "Title : " + todoList[index].title,
+                            style: TextStyle(
+                              color: Colors.black, //0xFFAFB4C6
+                              fontSize: 28.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 10.0, top: 0, bottom: 100, right: 10),
+                          child: Text(
+                            "Task : " + todoList[index].text,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 35.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Positioned(
                     bottom: 15.0,
                     right: 15.0,
                     child: FloatingActionButton(
                       heroTag: 'elt2',
-                      foregroundColor:Colors.white,
+                      foregroundColor: Colors.white,
                       backgroundColor: Colors.black,
                       elevation: 5.0,
-                      
                       child: Icon(EvaIcons.close),
-                      
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -904,21 +900,20 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
   /// Method to add an item to an index in a list
   void insertSingleItem(ToDo_Item d) {
     _ekle(d);
-
-    print("----Todo List İncludes : ------ ");
-
-    getList(todoList);
-
-    print("---- List End -----");
+    getTheList();
   }
 
-///// Iterator Design Pattern function . Class is at the 632. line.
-  getList(List list) {
-    ListIterator listIterator = ListIterator(list);
+  void getTheList() {
+    ListIterator itr = ListIterator(
+        todoList); // interface i implement eden class tan nesne oluşturuluyor.
+    print("******Animated List Include that things*******");
+    setState(() {
+      while (itr.hasNext()) {
+        print(itr.current());
+      }
+    });
 
-    while (listIterator.moveNext()) {
-      print(listIterator.current);
-    }
+    print("*****END OF THE ANIMATED LIST ******");
   }
 
   /// Method to remove an item at an index from the list
@@ -969,7 +964,9 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
                             .deleteTodo(todoList[index2].id)
                             .then((deletedId) {
                           setState(() {
-                            todoList.removeAt(indexList);
+                            if (indexList >= 0) {
+                              todoList.removeAt(indexList);
+                            }
                           });
                         });
                       }
@@ -1170,7 +1167,7 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
                                                               controller: txt5,
                                                               decoration: InputDecoration(
                                                                   hintText:
-                                                                      "Other , Cost , important etc.",
+                                                                      "Other , Cost etc.",
                                                                   hintStyle: TextStyle(
                                                                       color: Colors
                                                                           .grey),
@@ -1185,7 +1182,43 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
                                                                 });
                                                               },
                                                             ),
-                                                          ),
+                                                          ), /*
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                note =
+                                                                    addKeywords(
+                                                                        note);
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              height: 50,
+                                                              margin: EdgeInsets
+                                                                  .symmetric(
+                                                                      horizontal:
+                                                                          50),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50),
+                                                                  color: Colors
+                                                                      .red),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  "Add Important Keyword",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),*/
                                                         ],
                                                       ),
                                                     )),
@@ -1311,12 +1344,3 @@ class AnimatedListWidgetState extends State<NotesListWidget> {
 }
 
 ///// Iterator Design Pattern Class
-class ListIterator implements Iterator {
-  var _tempList;
-
-  ListIterator(this._tempList);
-
-  var _index = 0;
-  get current => _tempList[_index++].text;
-  bool moveNext() => _index < _tempList.length;
-}

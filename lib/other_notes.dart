@@ -9,7 +9,6 @@ import 'Animation/FadeAnimation.dart';
 import 'package:My_Todo_App/Animation/animated_dialog_box.dart';
 import 'dart:ui';
 
-
 class OtherListWidget extends StatefulWidget {
   const OtherListWidget({Key key}) : super(key: key);
   @override
@@ -17,7 +16,6 @@ class OtherListWidget extends StatefulWidget {
 }
 
 class OtherListWidgetState extends State<OtherListWidget> {
-
   var formKey = GlobalKey<FormState>();
 
   String _title;
@@ -82,7 +80,7 @@ class OtherListWidgetState extends State<OtherListWidget> {
     // categories['Notes'] = len;
   }
 
-  Future<int> _ekle(ToDo_Item item) async {
+  Future<int> _add(ToDo_Item item) async {
     // databaseHelper.deleteTable();
 
     await databaseHelper.addTodoOther(item).then((addInt) {
@@ -164,27 +162,25 @@ class OtherListWidgetState extends State<OtherListWidget> {
                 child: ListView(
                   children: <Widget>[
                     Card(
-                      margin: EdgeInsets.all(20.0),
-                      elevation: 5.0,
-                      color: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.elliptical(20.0, 20.0),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.elliptical(20, 20),
+                        margin: EdgeInsets.all(20.0),
+                        elevation: 5.0,
+                        color: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.elliptical(20.0, 20.0),
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.elliptical(20, 20),
+                          ),
                         ),
-                      ),
-                       child: GestureDetector(
+                        child: GestureDetector(
                           onTap: () async {
                             await animated_dialog_box.showRotatedAlert(
-                              
                                 title: Center(
-                                  
-                                  child: Text("Made by Fyrkerr",
-                                  )
-                                  ),
-                                  // IF YOU WANT TO ADD
+                                    child: Text(
+                                  "Made by Fyrkerr",
+                                )),
+                                // IF YOU WANT TO ADD
                                 context: context,
                                 firstButton: MaterialButton(
                                   // FIRST BUTTON IS REQUIRED
@@ -197,30 +193,30 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                     Navigator.of(context).pop();
                                   },
                                 ),
-                                icon: Icon(Icons.check,color: Colors.red,), // IF YOU WANT TO ADD ICON
+                                icon: Icon(
+                                  Icons.check,
+                                  color: Colors.red,
+                                ), // IF YOU WANT TO ADD ICON
                                 yourWidget: Container(
                                   child: Text('Enjoy'),
                                 ));
-                
-                                    
                           },
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage("https://i.ibb.co/KFY229K/avatar-1.png"),
-                          maxRadius: 28,
-                          backgroundColor: Colors.transparent,
-                        ),
-                        title: Text(
-                          "Fyrkerr",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        subtitle: Text("TODO",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15)),
-                      ),
-                    )
-                ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  "https://i.ibb.co/KFY229K/avatar-1.png"),
+                              maxRadius: 28,
+                              backgroundColor: Colors.transparent,
+                            ),
+                            title: Text(
+                              "Fyrkerr",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            subtitle: Text("TODO",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15)),
+                          ),
+                        )),
                     Card(
                       margin: EdgeInsets.all(20.0),
                       elevation: 5.0,
@@ -602,86 +598,82 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                                 ),
                                                 FadeAnimation(
                                                     1.6,
-                                                     GestureDetector(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              if (title !=
-                                                                  null) {
-                                                                var item =
-                                                                    ToDo_Item(
-                                                                        title,
-                                                                        note,
-                                                                        other);
-                                                                title = "";
-                                                                note = "";
-                                                                other = "";
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          if (title != null) {
+                                                            var item =
+                                                                ToDo_Item(
+                                                                    title,
+                                                                    note,
+                                                                    other);
+                                                            title = "";
+                                                            note = "";
+                                                            other = "";
 
-                                                                insertSingleItem(
-                                                                    item);
+                                                            insertSingleItem(
+                                                                item);
 
-                                                                var index2 =
-                                                                    index;
-                                                                print(index2);
-                                                                print(
-                                                                    indexList);
-                                                                if (todoListOther
-                                                                    .isNotEmpty) {
-                                                                  print(todoListOther[
+                                                            var index2 = index;
+                                                            print(index2);
+                                                            print(indexList);
+                                                            if (todoListOther
+                                                                .isNotEmpty) {
+                                                              print(
+                                                                  todoListOther[
                                                                       index2]);
 
-                                                                  databaseHelper
-                                                                      .deleteTodo(
-                                                                          todoListOther[index2]
-                                                                              .id)
-                                                                      .then(
-                                                                          (deletedId) {
-                                                                    setState(
-                                                                        () {
-                                                                      todoListOther.removeAt(
+                                                              databaseHelper
+                                                                  .deleteTodo(
+                                                                      todoListOther[
+                                                                              index2]
+                                                                          .id)
+                                                                  .then(
+                                                                      (deletedId) {
+                                                                setState(() {
+                                                                  todoListOther
+                                                                      .removeAt(
                                                                           indexList);
-                                                                    });
-                                                                  });
+                                                                });
+                                                              });
 
-                                                                  _removeSingleItems(
-                                                                      index);
+                                                              _removeSingleItems(
+                                                                  index);
 
-                                                                  // print("buraaaada")
-                                                                }
+                                                              // print("buraaaada")
+                                                            }
 
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(
-                                                                        "Cancel");
-                                                              } else {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(
-                                                                        "Cancel");
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(
-                                                                        "Cancel");
-                                                              }
-                                                            });
-                                                          },
-                                                          child:
-                                                    Container(
-                                                      height: 50,
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 50),
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(50),
-                                                          color: Colors.red),
-                                                      child: Center(
-                                                        child: Text(
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop("Cancel");
+                                                          } else {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop("Cancel");
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop("Cancel");
+                                                          }
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        height: 50,
+                                                        margin: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 50),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50),
+                                                            color: Colors.red),
+                                                        child: Center(
+                                                          child: Text(
                                                             "Save",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
-                                                                    fontSize: 20,
+                                                                fontSize: 20,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold),
@@ -693,10 +685,7 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                                   height: 30,
                                                 ),
                                                 Row(
-                                                  children: <Widget>[
-                                                    
-                      
-                                                  ],
+                                                  children: <Widget>[],
                                                 )
                                               ],
                                             ),
@@ -747,29 +736,13 @@ class OtherListWidgetState extends State<OtherListWidget> {
             ],
           ),
         ),
-
       ),
     );
   }
 
   /// Method to add an item to an index in a list
   void insertSingleItem(ToDo_Item d) {
-    _ekle(d);
-
-    print("----Todo List İncludes : ------ ");
-
-    getList(todoListOther);
-
-    print("---- List End -----");
-  }
-
-///// Iterator Design Pattern function . Class is at the 632. line.
-  getList(List list) {
-    ListIterator listIterator = ListIterator(list);
-
-    while (listIterator.moveNext()) {
-      print(listIterator.current);
-    }
+    _add(d);
   }
 
   /// Method to remove an item at an index from the list
@@ -817,7 +790,7 @@ class OtherListWidgetState extends State<OtherListWidget> {
                         print(todoListOther[index2]);
 
                         databaseHelper
-                            .deleteTodo(todoListOther[index2].id)
+                            .deleteTodoOther(todoListOther[index2].id)
                             .then((deletedId) {
                           setState(() {
                             todoListOther.removeAt(indexList);
@@ -974,7 +947,7 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                                                   (text) {
                                                                 setState(() {
                                                                   title = text;
-                                                                  txt3 =null;
+                                                                  txt3 = null;
                                                                 });
                                                               },
                                                             ),
@@ -1003,7 +976,7 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                                                   (text) {
                                                                 setState(() {
                                                                   note = text;
-                                                                  txt4=null;
+                                                                  txt4 = null;
                                                                 });
                                                               },
                                                             ),
@@ -1031,9 +1004,8 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                                               onChanged:
                                                                   (text) {
                                                                 setState(() {
-                                                                  
                                                                   other = text;
-                                                                  txt5= null;
+                                                                  txt5 = null;
                                                                 });
                                                               },
                                                             ),
@@ -1045,42 +1017,42 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                                   height: 40,
                                                 ),
                                                 FadeAnimation(
-                                                  
-                                                    1.6,
-                                                    GestureDetector(
-                                                          onTap: () {
-                                                           
-                                                            setState(() {
+                                                  1.6,
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        if ((title != null &&
+                                                                note != null &&
+                                                                other !=
+                                                                    null) &&
+                                                            (title != '' &&
+                                                                note != '' &&
+                                                                other != ' ')) {
+                                                          print(txt.text);
+                                                          var item = ToDo_Item(
+                                                              title,
+                                                              note,
+                                                              other);
 
-                                                            
+                                                          title = null;
+                                                          note = null;
+                                                          other = null;
 
-                                                              if((title != null && note != null && other != null )&& (title != '' && note != '' && other != ' ' )) {
-                                                                print(txt.text);
-                                                                var item = ToDo_Item(title,note,other);
-                                                               
-                                                                title = null;
-                                                                note = null;
-                                                                 other = null;
+                                                          insertSingleItem(
+                                                              item);
 
-                                                                 
+                                                          Navigator.pop(
+                                                              context);
+                                                        } else {
+                                                          Navigator.pop(
+                                                              context);
+                                                        }
+                                                      });
 
-                                                                insertSingleItem(
-                                                                    item);
-
-                                                                Navigator.pop(
-                                                                    context);
-                                                              }else{
-                                                                 Navigator.pop(
-                                                                    context);
-                                                              }
-                                                            });
-
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop("Cancel");
-                                                          },
-                                                          child:
-                                                    Container(
+                                                      Navigator.of(context)
+                                                          .pop("Cancel");
+                                                    },
+                                                    child: Container(
                                                       height: 50,
                                                       margin:
                                                           EdgeInsets.symmetric(
@@ -1091,21 +1063,20 @@ class OtherListWidgetState extends State<OtherListWidget> {
                                                                   .circular(50),
                                                           color: Colors.red),
                                                       child: Center(
-                                                        
-                                                          child: Text(
-                                                            "Save",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                    fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
+                                                        child: Text(
+                                                          "Save",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                       ),
                                                     ),
-                                                    ),
+                                                  ),
+                                                ),
                                                 SizedBox(
                                                   height: 30,
                                                 ),
@@ -1243,15 +1214,4 @@ class OtherListWidgetState extends State<OtherListWidget> {
 
 // }
 
-}
-
-///// Iterator Design Pattern Class
-class ListIterator implements Iterator {
-  var _tempList;
-
-  ListIterator(this._tempList);
-
-  var _index = 0;
-  get current => _tempList[_index++].text;
-  bool moveNext() => _index < _tempList.length;
 }

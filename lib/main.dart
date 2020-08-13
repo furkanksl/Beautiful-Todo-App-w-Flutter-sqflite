@@ -31,7 +31,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
   DatabaseHelper databaseHelper;
 
-  List<String> categoriesName = ["Tasks", "Shop Tasks", "Other Tasks", "Education Tasks"];
+  List<String> categoriesName = [
+    "Tasks",
+    "Shop Tasks",
+    "Other Tasks",
+    "Education Tasks"
+  ];
   List<int> categoriesLen = [0, 0, 0, 0];
 
   var formKey = GlobalKey<FormState>();
@@ -162,6 +167,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final title = "ToDo App Home";
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
+    var padding = MediaQuery.of(context).padding;
+    double newheight = height - padding.top - padding.bottom;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -190,7 +200,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             SizedBox(height: 10.0),
             Container(
-              height: 700,
+              height: newheight - 70,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: categoriesName.length + 1,

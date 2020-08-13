@@ -757,21 +757,10 @@ class EducationListWidgetState extends State<EducationListWidget> {
   void insertSingleItem(ToDo_Item d) {
     _ekle(d);
 
-    print("----Todo List İncludes : ------ ");
-
-    getList(todoListEdu);
-
-    print("---- List End -----");
   }
 
 ///// Iterator Design Pattern function . Class is at the 632. line.
-  getList(List list) {
-    ListIterator listIterator = ListIterator(list);
 
-    while (listIterator.moveNext()) {
-      print(listIterator.current);
-    }
-  }
 
   /// Method to remove an item at an index from the list
   void _removeSingleItems(int removeAt) {
@@ -1242,13 +1231,3 @@ class EducationListWidgetState extends State<EducationListWidget> {
 
 }
 
-///// Iterator Design Pattern Class
-class ListIterator implements Iterator {
-  var _tempList;
-
-  ListIterator(this._tempList);
-
-  var _index = 0;
-  get current => _tempList[_index++].text;
-  bool moveNext() => _index < _tempList.length;
-}
